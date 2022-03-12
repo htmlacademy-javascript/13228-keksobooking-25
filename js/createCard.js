@@ -36,6 +36,16 @@ const getImageList = (photos, photoElement) => {
   return photoFragment;
 };
 
+const dataCheck = (element, data, string) => {
+  if (Array.isArray(data) && data.every((el) => el)) {
+    element.textContent = string;
+  } else if (data) {
+    element.textContent = string || data;
+  } else {
+    element.classList.add('hidden');
+  }
+};
+
 const createCard = ({author, offer}) => {
   const cardElement = cardTemplate.cloneNode(true);
   const featureElementList = cardElement.querySelector('.popup__features');
@@ -44,18 +54,19 @@ const createCard = ({author, offer}) => {
   const photoElement = photoElementList.querySelector('.popup__photo');
   const photoList = getImageList(offer.photos, photoElement);
 
-  cardElement.querySelector('.popup__title').textContent = offer.title;
-  cardElement.querySelector('.popup__text--address').textContent = offer.address;
-  cardElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  cardElement.querySelector('.popup__type').textContent = propertyTypes[offer.type];
-  cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
-  cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  dataCheck(cardElement.querySelector('.popup__title'), offer.title);
+  dataCheck(cardElement.querySelector('.popup__text--address'), offer.address);
+  dataCheck(cardElement.querySelector('.popup__text--price'), offer.price, `${offer.price} ₽/ночь`);
+  dataCheck(cardElement.querySelector('.popup__type'), offer.type, propertyTypes[offer.type]);
+  dataCheck(cardElement.querySelector('.popup__text--capacity'), [offer.rooms, offer.guests], `${offer.rooms} комнаты для ${offer.guests} гостей`);
+  dataCheck(cardElement.querySelector('.popup__text--time'), [offer.checkin, offer.checkout], `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
+
   featureElementList.innerHTML = '';
   featureElementList.append(featureList);
-  cardElement.querySelector('.popup__description').textContent = offer.description;
+  dataCheck(cardElement.querySelector('.popup__description'), offer.description);
   photoElementList.innerHTML = '';
   photoElementList.append(photoList);
-  cardElement.querySelector('.popup__avatar').src = author.avatar;
+  dataCheck(cardElement.querySelector('.popup__avatar'), author.avatar);
 
   return cardElement;
 };
