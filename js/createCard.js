@@ -1,14 +1,6 @@
-const cardTemplate = document.querySelector('#card')
-  .content
-  .querySelector('.popup');
+import {PROPERTY_TYPES} from './data.js';
 
-const propertyTypes = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalow: 'Бунгало',
-  hotel: 'Отель',
-};
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const getFeatureList = (features, featureElementList) => {
   const featureFragment = document.createDocumentFragment();
@@ -36,16 +28,6 @@ const getImageList = (photos, photoElement) => {
   return photoFragment;
 };
 
-const dataCheck = (element, data, string) => {
-  if (Array.isArray(data) && data.every((el) => el)) {
-    element.textContent = string;
-  } else if (data) {
-    element.textContent = string || data;
-  } else {
-    element.classList.add('hidden');
-  }
-};
-
 const createCard = ({author, offer}) => {
   const cardElement = cardTemplate.cloneNode(true);
   const featureElementList = cardElement.querySelector('.popup__features');
@@ -53,20 +35,74 @@ const createCard = ({author, offer}) => {
   const photoElementList = cardElement.querySelector('.popup__photos');
   const photoElement = photoElementList.querySelector('.popup__photo');
   const photoList = getImageList(offer.photos, photoElement);
+  const addText = (element, text) => {
+    cardElement.querySelector(`.popup__${element}`).textContent = text;
+  };
+  const hiddenElement = (nameOfClass) => {
+    cardElement.querySelector(`.popup__${nameOfClass}`).classList.add('hidden');
+  };
 
-  dataCheck(cardElement.querySelector('.popup__title'), offer.title);
-  dataCheck(cardElement.querySelector('.popup__text--address'), offer.address);
-  dataCheck(cardElement.querySelector('.popup__text--price'), offer.price, `${offer.price} ₽/ночь`);
-  dataCheck(cardElement.querySelector('.popup__type'), offer.type, propertyTypes[offer.type]);
-  dataCheck(cardElement.querySelector('.popup__text--capacity'), [offer.rooms, offer.guests], `${offer.rooms} комнаты для ${offer.guests} гостей`);
-  dataCheck(cardElement.querySelector('.popup__text--time'), [offer.checkin, offer.checkout], `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
+  if (offer.title) {
+    addText('title', offer.title);
+  } else {
+    hiddenElement('title');
+  }
 
-  featureElementList.innerHTML = '';
-  featureElementList.append(featureList);
-  dataCheck(cardElement.querySelector('.popup__description'), offer.description);
-  photoElementList.innerHTML = '';
-  photoElementList.append(photoList);
-  dataCheck(cardElement.querySelector('.popup__avatar'), author.avatar);
+  if (offer.address) {
+    addText('text--address', offer.address);
+  } else {
+    hiddenElement('text--address');
+  }
+
+  if (offer.price) {
+    addText('text--price', `${offer.price} ₽/ночь`);
+  } else {
+    hiddenElement('text--price');
+  }
+
+  if (offer.type) {
+    addText('type', PROPERTY_TYPES[offer.type]);
+  } else {
+    hiddenElement('type');
+  }
+
+  if (offer.rooms && offer.guests) {
+    addText('text--capacity', `${offer.rooms} комнаты для ${offer.guests} гостей`);
+  } else {
+    hiddenElement('text--capacity');
+  }
+
+  if (offer.checkin && offer.checkout) {
+    addText('text--time', `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
+  } else {
+    hiddenElement('text--time');
+  }
+
+  if (featureList.querySelectorAll('.popup__feature').length) {
+    featureElementList.innerHTML = '';
+    featureElementList.append(featureList);
+  } else {
+    featureElementList.classList.add('hidden');
+  }
+
+  if (offer.description) {
+    addText('description', offer.description);
+  } else {
+    hiddenElement('description');
+  }
+
+  if (photoList.querySelectorAll('.popup__photo').length) {
+    photoElementList.innerHTML = '';
+    photoElementList.append(photoList);
+  } else {
+    photoElementList.classList.add('hidden');
+  }
+
+  if (author.avatar) {
+    cardElement.querySelector('.popup__avatar').src = author.avatar;
+  } else {
+    hiddenElement('avatar');
+  }
 
   return cardElement;
 };
