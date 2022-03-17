@@ -1,5 +1,6 @@
 import {getRandomFloatingInteger} from './utils.js';
 import {createAdvertisement} from './createAdvertisement.js';
+import {createCard} from './createCard.js';
 
 const advertisementList = [];
 
@@ -9,3 +10,8 @@ for (let i = 0; i < 10; i++) {
 
   advertisementList.push(createAdvertisement(i, lat, lng));
 }
+
+const map = document.querySelector('#map-canvas');
+const card = createCard(advertisementList[0]);
+
+map.append(card);

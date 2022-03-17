@@ -1,1 +1,1 @@
-import './advertGeneratiom.js';
+import './advertGeneration.js';

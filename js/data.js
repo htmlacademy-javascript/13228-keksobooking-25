@@ -48,4 +48,12 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export {TITLES, TYPES, FEATURES, DESCRIPTIONS, PHOTOS};
+const PROPERTY_TYPES = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
+
+export {TITLES, TYPES, FEATURES, DESCRIPTIONS, PHOTOS, PROPERTY_TYPES};
