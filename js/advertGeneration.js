@@ -1,6 +1,7 @@
 import {getRandomFloatingInteger} from './utils.js';
 import {createAdvertisement} from './createAdvertisement.js';
 import {createCard} from './createCard.js';
+import {switchToInactiveState, switchToActiveState} from './managingFormStates.js';
 
 const advertisementList = [];
 
@@ -15,3 +16,6 @@ const map = document.querySelector('#map-canvas');
 const card = createCard(advertisementList[0]);
 
 map.append(card);
+
+switchToInactiveState();
+switchToActiveState();
