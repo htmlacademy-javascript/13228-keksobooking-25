@@ -56,4 +56,12 @@ const PROPERTY_TYPES = {
   hotel: 'Отель',
 };
 
-export {TITLES, TYPES, FEATURES, DESCRIPTIONS, PHOTOS, PROPERTY_TYPES};
+const PROPERTY_MIN_PRICE = {
+  palace: '10000',
+  flat: '1000',
+  house: '5000',
+  bungalow: '0',
+  hotel: '3000',
+};
+
+export {TITLES, TYPES, FEATURES, DESCRIPTIONS, PHOTOS, PROPERTY_TYPES, PROPERTY_MIN_PRICE};

@@ -1,6 +1,39 @@
+import {PROPERTY_MIN_PRICE} from './data.js';
+
 const form = document.querySelector('.ad-form');
 const roomNumber = form.querySelector('#room_number');
 const capacity = form.querySelector('#capacity');
+const typeOfHousing = form.querySelector('#type');
+const price = form.querySelector('#price');
+const timeField = form.querySelector('.ad-form__element--time');
+const timeSelects = timeField.querySelectorAll('select');
+
+const setMinPrice = (minPrice) => {
+  price.setAttribute('placeholder', minPrice);
+  price.setAttribute('minlength', minPrice);
+  price.setAttribute('data-pristine-minlength-message', `Минимальное значение — ${minPrice}`);
+};
+
+const setTime = (typeOfSelect, index) => {
+  const targetSelectId = typeOfSelect === 'timein' ? '#timeout' : '#timein';
+  timeField.querySelector(targetSelectId).selectedIndex = index;
+};
+
+setMinPrice(PROPERTY_MIN_PRICE[typeOfHousing.value]);
+
+typeOfHousing.addEventListener('change', (evt) => {
+  setMinPrice(PROPERTY_MIN_PRICE[evt.target.value]);
+});
+
+timeSelects.forEach((select) => {
+  select.addEventListener('change', (evt) => {
+    const selectId = evt.target.id;
+    const selectIndex = evt.target.selectedIndex;
+
+    setTime(selectId, selectIndex);
+  });
+});
+
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
