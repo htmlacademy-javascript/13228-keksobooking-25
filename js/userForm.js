@@ -10,8 +10,7 @@ const timeSelects = timeField.querySelectorAll('select');
 
 const setMinPrice = (minPrice) => {
   price.setAttribute('placeholder', minPrice);
-  price.setAttribute('minlength', minPrice);
-  price.setAttribute('data-pristine-minlength-message', `Минимальное значение — ${minPrice}`);
+  price.setAttribute('data-min-price', minPrice);
 };
 
 const setTime = (typeOfSelect, index) => {
@@ -55,6 +54,14 @@ const validateCapacity = (countOfRoom) => {
   return numberOfCapacity === 0;
 };
 
+const validatePrice = () => {
+  const currentPrice = price.value;
+  const minPrice = Number(price.dataset.minPrice);
+  const maxPrice = Number(price.dataset.maxPrice);
+
+  return currentPrice && currentPrice <= maxPrice && currentPrice >= minPrice;
+};
+
 const getCapacityErrorMessage = () => {
   const numberOfCapacity = Number(capacity.value);
   const numberOfRoom = Number(roomNumber.value);
@@ -70,10 +77,31 @@ const getCapacityErrorMessage = () => {
   return 'Только не для гостей';
 };
 
+const getPriceErrorMessage = () => {
+  const currentPrice = price.value;
+  const minPrice = Number(price.dataset.minPrice);
+
+  if (!currentPrice) {
+    return 'Обязательное текстовое поле';
+  }
+
+  if (currentPrice < minPrice) {
+    return `Минимальное значение — ${minPrice}`;
+  }
+
+  return 'Максимальное значение — 100 000';
+};
+
 pristine.addValidator(
   roomNumber,
   validateCapacity,
   getCapacityErrorMessage
+);
+
+pristine.addValidator(
+  price,
+  validatePrice,
+  getPriceErrorMessage
 );
 
 form.addEventListener('submit', (evt) => {
