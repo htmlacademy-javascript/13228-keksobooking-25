@@ -1,4 +1,6 @@
 import {PROPERTY_MIN_PRICE} from './data.js';
+import {createSlider, updatePrice, updateValue} from './priceSlider.js';
+createSlider();
 
 const form = document.querySelector('.ad-form');
 const roomNumber = form.querySelector('#room_number');
@@ -8,9 +10,14 @@ const price = form.querySelector('#price');
 const timeField = form.querySelector('.ad-form__element--time');
 const timeSelects = timeField.querySelectorAll('select');
 
+price.addEventListener('change', (evt) => {
+  updateValue(evt.target.value);
+});
+
 const setMinPrice = (minPrice) => {
   price.setAttribute('placeholder', minPrice);
   price.setAttribute('data-min-price', minPrice);
+  updatePrice(minPrice);
 };
 
 const setTime = (typeOfSelect, index) => {
@@ -32,7 +39,6 @@ timeSelects.forEach((select) => {
     setTime(selectId, selectIndex);
   });
 });
-
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
